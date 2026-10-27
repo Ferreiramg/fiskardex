@@ -32,4 +32,8 @@ export async function uploadImport(file: File): Promise<UploadResponse> {
   return data
 }
 
+export async function deleteImport(id: string): Promise<void> {
+  await api.delete(`/imports/${id}`)
+}
+
 export default api

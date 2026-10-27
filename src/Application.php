@@ -6,7 +6,9 @@ namespace Fiskardex;
 
 use Fiskardex\Fiscal\EfdParser;
 use Fiskardex\Fiscal\XmlParser;
-use Fiskardex\Storage\JsonStore;
+use Fiskardex\Database\Migrator;
+use Fiskardex\Storage\SqliteImportStore;
+use PDO;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +20,7 @@ use Symfony\Component\Uid\Uuid;
 
 final class Application
 {
-    private JsonStore $store;
+    private SqliteImportStore $store;
 
     private string $uploads;
 
@@ -33,7 +35,10 @@ final class Application
             mkdir($this->uploads, 0775, true);
         }
 
-        $this->store = new JsonStore($data . '/imports.json');
+        $databasePath = getenv('APP_DATABASE_PATH') ?: $data . '/fiskardex.sqlite';
+        $connection = new PDO('sqlite:' . $databasePath);
+        (new Migrator($connection, $root . '/database/migrations'))->migrate();
+        $this->store = new SqliteImportStore($connection);
         $this->routes = new RouteCollection();
         $this->configureRoutes();
     }
@@ -63,7 +68,15 @@ final class Application
         );
         $this->routes->add(
             'import',
-            new Route('/api/v1/imports/{id}', ['_handler' => 'import'], ['id' => '[0-9a-f-]+']),
+            new Route(
+                '/api/v1/imports/{id}',
+                ['_handler' => 'import'],
+                ['id' => '[0-9a-f-]+'],
+                [],
+                '',
+                [],
+                ['GET', 'DELETE'],
+            ),
         );
         $this->routes->add(
             'records',
@@ -89,7 +102,7 @@ final class Application
             ),
             'health' => new JsonResponse(['status' => 'ok', 'service' => 'fiskardex-mvp']),
             'imports' => $request->isMethod('POST') ? $this->upload($request) : new JsonResponse($this->store->all()),
-            'import' => $this->one($match['id']),
+            'import' => $request->isMethod('DELETE') ? $this->delete($match['id']) : $this->one($match['id']),
             'records' => $this->collection($match['id'], 'records'),
             'documents' => $this->collection($match['id'], 'documents'),
             'issues' => $this->collection($match['id'], 'issues'),
@@ -121,6 +134,8 @@ final class Application
         $hash = hash_file('sha256', $path);
 
         if ($existing = $this->store->byHash($hash)) {
+            unlink($path);
+
             return new JsonResponse($existing);
         }
 
@@ -185,5 +200,22 @@ final class Application
         return $job
             ? new JsonResponse($job[$key] ?? [])
             : new JsonResponse(['title' => 'Not found'], 404);
+    }
+
+    private function delete(string $id): Response
+    {
+        $job = $this->store->delete($id);
+
+        if ($job === null) {
+            return new JsonResponse(['title' => 'Not found'], 404);
+        }
+
+        $path = $this->uploads . '/' . $job['storedName'];
+
+        if (is_file($path)) {
+            unlink($path);
+        }
+
+        return new Response('', 204);
     }
 }

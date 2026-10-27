@@ -31,6 +31,7 @@ O Vite atende em `http://localhost:5173` e encaminha `/api` para o backend em
 - `GET /api/v1/imports`
 - `GET /api/v1/imports/{id}`
 - `POST /api/v1/imports`
+- `DELETE /api/v1/imports/{id}`
 
 As áreas de Kardex, custeio, alocação e ICMS permanecem como telas de produto:
 os endpoints correspondentes ainda não existem no backend.
@@ -50,3 +51,15 @@ aplicação integrada.
 composer check
 npm run typecheck
 ```
+
+## Banco de dados
+
+O MVP usa SQLite em `var/data/fiskardex.sqlite`. Para criar ou atualizar o
+schema, execute:
+
+```powershell
+composer migrate
+```
+
+A migration inicial cria as tabelas `imports`, `efd_records` e `import_issues`
+para receber os metadados, registros e ocorrências extraídos de arquivos EFD.

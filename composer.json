@@ -8,6 +8,8 @@
     "ext-dom": "*",
     "ext-libxml": "*",
     "ext-mbstring": "*",
+    "ext-pdo": "*",
+    "ext-pdo_sqlite": "*",
     "ext-simplexml": "*",
     "symfony/http-foundation": "^7.3",
     "symfony/routing": "^7.3",
@@ -29,6 +31,7 @@
   },
   "scripts": {
     "serve": "php -S 127.0.0.1:8000 -t public public/index.php",
+    "migrate": "php bin/migrate",
     "test": "phpunit",
     "lint": "phpcs --standard=PSR12 --extensions=php src tests public",
     "check": [
