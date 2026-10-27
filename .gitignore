@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 node_modules/
 dist/
 data/
@@ -5,3 +6,17 @@ vendor/
 var/
 .phpunit.result.cache
 .env
+=======
+node_modules
+dist
+.DS_Store
+*.local
+.env
+.env.*
+!.env.example
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.log
+tsconfig.tsbuildinfo
+>>>>>>> 71b7f016080d2a79235214d05de26ece18214bf1
