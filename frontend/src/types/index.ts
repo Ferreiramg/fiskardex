@@ -5,7 +5,7 @@ export type ImportStatus =
   | 'completed_with_issues'
   | 'failed'
 
-export type DocumentType = 'efd' | 'nfe_in' | 'nfe_out'
+export type DocumentType = 'efd' | 'nfe-xml' | 'unknown'
 
 export interface ImportRecord {
   id: string
@@ -17,9 +17,31 @@ export interface ImportRecord {
   periodEnd?: string
   encoding?: string
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
   registers?: Record<string, number>
   issues?: ImportIssue[]
+}
+
+export interface ImportResponse {
+  id: string
+  originalName: string
+  kind: DocumentType
+  status: ImportStatus
+  sha256: string
+  period?: {
+    start?: string
+    end?: string
+  }
+  encoding?: string
+  createdAt: string
+  recordCounts?: Record<string, number>
+  issues?: ImportIssue[]
+}
+
+export interface UploadResponse {
+  id: string
+  status: ImportStatus
+  sha256: string
 }
 
 export interface ImportIssue {

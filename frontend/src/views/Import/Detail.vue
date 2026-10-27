@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { useRoute, useRouter, RouterLink } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 import { useImportsStore } from '@/stores/imports'
 import StatusBadge from '@/components/StatusBadge.vue'
 
 const route = useRoute()
-const router = useRouter()
 const store = useImportsStore()
 
 const id = computed(() => route.params.id as string)
 
 onMounted(() => {
-  if (!store.items.length) store.fetchAll()
-  store.select(id.value)
+  store.fetchOne(id.value)
 })
 
 const item = computed(() => store.selected)
