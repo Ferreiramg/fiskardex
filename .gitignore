@@ -19,3 +19,5 @@ dist
 .idea
 *.log
 tsconfig.tsbuildinfo
+.claude/
+.codex/

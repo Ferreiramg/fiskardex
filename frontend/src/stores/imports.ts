@@ -23,6 +23,8 @@ export const useImportsStore = defineStore('imports', () => {
   const items = ref<ImportRecord[]>([])
   const loading = ref(false)
   const error = ref<string | null>(null)
+  const notice = ref<string | null>(null)
+  const deletingId = ref<string | null>(null)
   const selectedId = ref<string | null>(null)
 
   const selected = computed(() =>
@@ -32,6 +34,7 @@ export const useImportsStore = defineStore('imports', () => {
   async function fetchAll() {
     loading.value = true
     error.value = null
+    notice.value = null
 
     try {
       items.value = (await api.listImports()).map(toImportRecord)
@@ -71,16 +74,45 @@ export const useImportsStore = defineStore('imports', () => {
   async function upload(file: File) {
     loading.value = true
     error.value = null
+    notice.value = null
 
     try {
       const result = await api.uploadImport(file)
       await fetchOne(result.id)
+      notice.value = 'Importação processada com sucesso.'
     } catch (exception: unknown) {
       error.value = exception instanceof Error
         ? exception.message
         : 'Falha no upload do arquivo.'
     } finally {
       loading.value = false
+    }
+  }
+
+  async function remove(id: string): Promise<boolean> {
+    deletingId.value = id
+    error.value = null
+    notice.value = null
+
+    try {
+      await api.deleteImport(id)
+      items.value = items.value.filter((item) => item.id !== id)
+
+      if (selectedId.value === id) {
+        selectedId.value = null
+      }
+
+      notice.value = 'Arquivo e dados da importação foram excluídos.'
+
+      return true
+    } catch (exception: unknown) {
+      error.value = exception instanceof Error
+        ? exception.message
+        : 'Não foi possível excluir a importação.'
+
+      return false
+    } finally {
+      deletingId.value = null
     }
   }
 
@@ -92,11 +124,14 @@ export const useImportsStore = defineStore('imports', () => {
     items,
     loading,
     error,
+    notice,
+    deletingId,
     selectedId,
     selected,
     fetchAll,
     fetchOne,
     upload,
+    remove,
     select,
   }
 })
