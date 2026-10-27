@@ -1,26 +1,74 @@
-# Fiskardex
+# Fiskardex — Frontend
 
-Especificações de um sistema de reconstrução de estoque e custos para subsidiar estudos de ICMS, auditorias e processos administrativos ou judiciais.
+Cliente web para o sistema de análise Kardex (SPED EFD + NF-e XML).
 
-**Estado:** especificação inicial para revisão técnica, contábil e jurídica. Não há implementação nem cálculo de crédito validado.
+Stack: **Vite · Vue 3 · TypeScript · Tailwind CSS · Pinia · Vue Router**
 
-## Documentação
+## Pré-requisitos
 
-1. [Produto, escopo e requisitos](docs/specs/01-produto.md)
-2. [Diagnóstico da amostra fiscal](docs/specs/02-amostra-efd.md)
-3. [Arquitetura e modelo de dados](docs/specs/03-arquitetura-dados.md)
-4. [Kardex, custos e regras tributárias](docs/specs/04-regras-dominio.md)
-5. [Contratos, segurança e operação](docs/specs/05-contratos-operacao.md)
-6. [Aceite, testes, roadmap e decisões pendentes](docs/specs/06-validacao-roadmap.md)
+- Node.js 20+
+- npm ou pnpm
 
-## Diretrizes
+## Setup
 
-- PHP 8.4 e orientação a objetos; monólito modular como arquitetura inicial.
-- FIFO/PEPS como primeira estratégia; média ponderada móvel como cenário independente.
-- Rastreabilidade até documentos originais e execuções versionadas.
-- Estoque calculado não comprova origem física; simulação tributária não comprova direito a crédito.
-- Arquivos fiscais, dados pessoais, credenciais e relatórios com dados reais não devem ser versionados neste repositório.
+```bash
+cd fiskardex
+npm install
+npm run dev
+```
 
-## Desenvolvimento
+Abre em `http://localhost:5173`.
 
-A seleção do framework e a implementação serão tarefas posteriores. Não há ainda comandos de instalação, servidor ou suíte executável. Os cenários de aceite estão documentados, não executados.
+O Vite faz proxy de `/api` → `http://localhost:8000` (Symfony).
+
+## Build para produção
+
+```bash
+npm run build
+```
+
+O output fica em `dist/`. Pode ser servido pelo Symfony (ex.: `public/build`) ou por qualquer static server.
+
+## Estrutura
+
+```
+src/
+├── api/           # Cliente Axios tipado
+├── assets/        # CSS (Tailwind)
+├── components/    # StatusBadge, EmptyState…
+├── composables/
+├── layouts/       # AppLayout (nav + shell)
+├── router/
+├── stores/        # Pinia (imports, …)
+├── types/         # Interfaces TypeScript
+└── views/
+    ├── Import/    # Lista + detalhe (já funcional com mock)
+    ├── Kardex/
+    ├── Costing/
+    ├── Allocation/
+    ├── RecoverableIcms/
+    └── Reports/
+```
+
+## Integração com o backend Symfony
+
+Endpoints esperados (já tipados em `src/api/client.ts`):
+
+| Método | Path | Descrição |
+|--------|------|-----------|
+| GET | `/api/imports` | Lista importações |
+| GET | `/api/imports/{id}` | Detalhe + registros + issues |
+| POST | `/api/imports` | Upload (multipart) |
+| GET | `/api/kardex` | Kardex por produto |
+| GET | `/api/costing/{fifo\|average}` | Resultado de custeio |
+| GET | `/api/allocation` | Links compra → venda |
+| GET | `/api/recoverable-icms` | Resumo ICMS recuperável |
+
+Enquanto a API não estiver pronta, a store de importações usa **mock** baseado no EFD real do MVP (`completed_with_issues`, registros 0150, 0200, etc.).
+
+## Próximos passos
+
+1. Conectar `stores/imports.ts` à API real (remover mock).
+2. Popular Kardex / Custeio / Alocação / ICMS a partir dos endpoints.
+3. Adicionar gráficos (Chart.js ou similar) nos relatórios.
+4. Autenticação se necessário (token / session Symfony).
