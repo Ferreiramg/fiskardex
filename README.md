@@ -1,26 +1,41 @@
 # Fiskardex
 
-Especificações de um sistema de reconstrução de estoque e custos para subsidiar estudos de ICMS, auditorias e processos administrativos ou judiciais.
+MVP de ingestão e visualização de documentos fiscais para o laboratório Fiskardex.
 
-**Estado:** especificação inicial para revisão técnica, contábil e jurídica. Não há implementação nem cálculo de crédito validado.
+## Estado atual
 
-## Documentação
+Aplicação em PHP 8.4 usando componentes Symfony leves para HTTP, roteamento e identificadores. O frontend é HTML, JavaScript e Tailwind via CDN no protótipo.
 
-1. [Produto, escopo e requisitos](docs/specs/01-produto.md)
-2. [Diagnóstico da amostra fiscal](docs/specs/02-amostra-efd.md)
-3. [Arquitetura e modelo de dados](docs/specs/03-arquitetura-dados.md)
-4. [Kardex, custos e regras tributárias](docs/specs/04-regras-dominio.md)
-5. [Contratos, segurança e operação](docs/specs/05-contratos-operacao.md)
-6. [Aceite, testes, roadmap e decisões pendentes](docs/specs/06-validacao-roadmap.md)
+O MVP implementado:
 
-## Diretrizes
+- recebe EFD/TXT e XML NF-e;
+- preserva o original em `var/data/uploads`;
+- calcula SHA-256 e aplica idempotência por hash;
+- interpreta registros EFD em streaming;
+- identifica período e contagens por registro;
+- processa a estrutura inicial de NF-e XML;
+- registra problemas de codificação e parsing;
+- exibe importações, diagnóstico e documentos na interface web.
 
-- PHP 8.4 e orientação a objetos; monólito modular como arquitetura inicial.
-- FIFO/PEPS como primeira estratégia; média ponderada móvel como cenário independente.
-- Rastreabilidade até documentos originais e execuções versionadas.
-- Estoque calculado não comprova origem física; simulação tributária não comprova direito a crédito.
-- Arquivos fiscais, dados pessoais, credenciais e relatórios com dados reais não devem ser versionados neste repositório.
+Ainda não implementa autenticação, PostgreSQL, fila, conciliação econômica, Kardex, FIFO ou cálculo tributário.
 
-## Desenvolvimento
+## Executar
 
-A seleção do framework e a implementação serão tarefas posteriores. Não há ainda comandos de instalação, servidor ou suíte executável. Os cenários de aceite estão documentados, não executados.
+```powershell
+composer install
+composer test
+composer serve
+```
+
+Abra `http://127.0.0.1:8000`.
+
+## Estrutura
+
+- `public/index.php`: front controller HTTP.
+- `src/Application.php`: rotas e casos de uso do MVP.
+- `src/Fiscal/`: parsers EFD e XML.
+- `src/Storage/`: persistência local de laboratório.
+- `public/index.html`: interface de upload e visualização.
+- `docs/specs/07-mvp-upload-visualizacao.md`: especificação do incremento.
+
+Dados fiscais reais não devem ser versionados neste repositório. A persistência JSON e o Tailwind via CDN são escolhas temporárias para o laboratório; antes de produção devem ser substituídos por PostgreSQL, armazenamento privado de objetos, autenticação e build local do frontend.
