@@ -1,3 +1,17 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fiskardex</title><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-slate-50 text-slate-900"><main class="max-w-6xl mx-auto p-6"><h1 class="text-3xl font-bold">Fiskardex</h1><p class="text-slate-500">MVP de ingestão e visualização fiscal</p><section class="bg-white rounded-xl p-5 mt-6 shadow-sm"><h2 class="text-xl font-semibold mb-3">Enviar documento</h2><div class="flex gap-3"><input id="file" type="file" accept=".txt,.efd,.xml" class="border rounded-lg p-2"><button id="send" class="bg-blue-600 text-white px-4 rounded-lg">Importar</button></div><p id="message" class="text-slate-500 mt-2"></p></section><section class="bg-white rounded-xl p-5 mt-6 shadow-sm"><h2 class="text-xl font-semibold mb-3">Importações</h2><div id="list">Carregando…</div></section><section id="detail" class="bg-white rounded-xl p-5 mt-6 shadow-sm hidden"></section></main><script>
-const $=s=>document.querySelector(s), esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); async function load(){const d=await(await fetch('/api/v1/imports')).json();$('#list').innerHTML=d.length?`<div class="overflow-auto"><table class="w-full text-sm"><tr class="text-left border-b"><th class="p-2">Arquivo</th><th>Tipo</th><th>Status</th><th>Hash</th><th></th></tr>${d.map(x=>`<tr class="border-b"><td class="p-2">${esc(x.originalName)}</td><td>${esc(x.kind)}</td><td><span class="bg-blue-100 px-2 py-1 rounded">${esc(x.status)}</span></td><td><code>${x.sha256.slice(0,16)}…</code></td><td><button class="text-blue-700" onclick="show('${x.id}')">Ver</button></td></tr>`).join('')}</table></div>`:'Nenhuma importação ainda.'} async function show(id){const x=await(await fetch('/api/v1/imports/'+id)).json();$('#detail').classList.remove('hidden');$('#detail').innerHTML=`<h2 class="text-xl font-semibold">${esc(x.originalName)}</h2><div class="grid md:grid-cols-4 gap-3 my-4"><div><b>Status</b><br>${esc(x.status)}</div><div><b>Período</b><br>${esc(x.period.start)} — ${esc(x.period.end)}</div><div><b>Codificação</b><br>${esc(x.encoding)}</div><div><b>SHA-256</b><br><code>${x.sha256.slice(0,24)}…</code></div></div><h3 class="font-semibold">Registros</h3><pre class="bg-slate-100 p-3 rounded">${esc(JSON.stringify(x.recordCounts,null,2))}</pre><h3 class="font-semibold mt-4">Problemas (${x.issues.length})</h3>${x.issues.map(i=>`<p class="text-red-700"><b>${esc(i.code)}</b> — ${esc(i.message)}</p>`).join('')||'<p class="text-green-700">Nenhum problema.</p>'}<h3 class="font-semibold mt-4">Documentos (${x.documents.length})</h3>${x.documents.map(d=>`<p><b>${esc(d.model)}</b> NF ${esc(d.number)} — ${d.items.length} itens</p>`).join('')||'<p>Nenhum documento itemizado extraído.</p>'}`} $('#send').onclick=async()=>{const f=$('#file').files[0];if(!f)return $('#message').textContent='Selecione um arquivo.';$('#message').textContent='Processando…';const fd=new FormData();fd.append('file',f);const r=await fetch('/api/v1/imports',{method:'POST',body:fd});$('#message').textContent=r.ok?'Importação criada.':'Falha no upload.';load()};load();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fiskardex — Análise Kardex & ICMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/app-assets/index-BhHM5BLx.js"></script>
+    <link rel="stylesheet" crossorigin href="/app-assets/index--VdgdC_m.css">
+  </head>
+  <body class="bg-surface text-slate-100 antialiased">
+    <div id="app"></div>
+  </body>
+</html>

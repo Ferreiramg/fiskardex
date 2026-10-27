@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 
 const route = useRoute()
@@ -13,7 +12,6 @@ const nav = [
   { to: '/reports', label: 'Relatórios', icon: 'chart' },
 ]
 
-const isActive = (path: string) => computed(() => route.path.startsWith(path))
 </script>
 
 <template>

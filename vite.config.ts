@@ -4,9 +4,10 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [vue()],
+  publicDir: false,
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      '@': path.resolve(__dirname, './frontend/src'),
     },
   },
   server: {
@@ -19,8 +20,9 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist',
-    emptyOutDir: true,
+    outDir: path.resolve(__dirname, './public'),
+    assetsDir: 'app-assets',
+    emptyOutDir: false,
     manifest: true,
   },
 })

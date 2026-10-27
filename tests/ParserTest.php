@@ -24,4 +24,21 @@ final class ParserTest extends TestCase
 
         unlink($file);
     }
+
+    public function testEfdParserConvertsWindows1252ToUtf8(): void
+    {
+        $file = tempnam(sys_get_temp_dir(), 'fiskardex');
+
+        self::assertNotFalse($file);
+        $content = "|0000|020|0|01072026|31072026|EMPRESA|\n|0100|JARDIM SÃO PAULO|\n";
+        file_put_contents($file, mb_convert_encoding($content, 'Windows-1252', 'UTF-8'));
+
+        $result = (new EfdParser())->parse($file, ['issues' => []]);
+
+        self::assertSame('windows-1252', $result['encoding']);
+        self::assertSame('JARDIM SÃO PAULO', $result['records'][1]['fields'][2]);
+        self::assertSame([], $result['issues']);
+
+        unlink($file);
+    }
 }

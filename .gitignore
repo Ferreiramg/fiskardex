@@ -1,12 +1,12 @@
-<<<<<<< HEAD
 node_modules/
+public/app-assets/
+vendor/
 dist/
 data/
 vendor/
 var/
 .phpunit.result.cache
 .env
-=======
 node_modules
 dist
 .DS_Store
@@ -19,4 +19,3 @@ dist
 .idea
 *.log
 tsconfig.tsbuildinfo
->>>>>>> 71b7f016080d2a79235214d05de26ece18214bf1

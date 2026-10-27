@@ -26,12 +26,14 @@ final class EfdParser
             }
 
             $validUtf8 = mb_check_encoding($raw, 'UTF-8');
+            $decoded = $raw;
 
             if (!$validUtf8) {
-                $encoding = 'unknown';
+                $encoding = 'windows-1252';
+                $decoded = mb_convert_encoding($raw, 'UTF-8', 'Windows-1252');
             }
 
-            $fields = explode('|', $raw);
+            $fields = explode('|', $decoded);
             $type = $fields[1] ?? '';
 
             if ($type === '') {
@@ -50,7 +52,7 @@ final class EfdParser
                 $records[] = [
                     'line' => $line,
                     'type' => $type,
-                    'fields' => $validUtf8 ? $fields : [],
+                    'fields' => $fields,
                     'rawBase64' => base64_encode($raw),
                 ];
             }
@@ -64,14 +66,6 @@ final class EfdParser
         }
 
         fclose($handle);
-
-        if ($encoding === 'unknown') {
-            $issues[] = $this->issue(
-                'warning',
-                'ENCODING_UNCERTAIN',
-                'Bytes incompatíveis com UTF-8 foram encontrados; o original foi preservado.',
-            );
-        }
 
         $job['encoding'] = $encoding;
         $job['recordCounts'] = $counts;
