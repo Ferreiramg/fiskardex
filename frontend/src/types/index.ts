@@ -20,6 +20,14 @@ export interface ImportRecord {
   updatedAt?: string
   registers?: Record<string, number>
   issues?: ImportIssue[]
+  records?: EfdRecord[]
+}
+
+export interface EfdRecord {
+  line: number
+  type: string
+  fields: string[]
+  rawBase64: string
 }
 
 export interface ImportResponse {
@@ -36,6 +44,7 @@ export interface ImportResponse {
   createdAt: string
   recordCounts?: Record<string, number>
   issues?: ImportIssue[]
+  records?: EfdRecord[]
 }
 
 export interface UploadResponse {
