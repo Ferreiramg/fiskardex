@@ -4,7 +4,12 @@ MVP para ingestão e visualização de documentos fiscais EFD/TXT e NF-e XML.
 
 ## Estrutura
 
-- `src/`: backend PHP 8.4, com namespace `Fiskardex\\`.
+- `src/Application/`: ações de aplicação organizadas por domínio, como upload, consulta e exclusão de importações.
+- `src/Domain/`: contratos e regras centrais do negócio, sem dependência de HTTP ou banco.
+- `src/Http/`: rotas e controllers que traduzem requisições e respostas HTTP.
+- `src/Storage/` e `src/Database/`: persistência SQLite e migrations.
+- `src/Fiscal/`: parsers dos formatos fiscais suportados.
+- `src/Application.php`: composição das dependências e entrada HTTP; regras de negócio ficam nas ações.
 - `frontend/src/`: código da aplicação Vue 3.
 - raiz: configuração e dependências do frontend (Vite, TypeScript, Tailwind e npm).
 - `public/`: front controller PHP e arquivos estáticos gerados pelo build do Vue.

@@ -16,6 +16,7 @@ function toImportRecord(importResponse: ImportResponse): ImportRecord {
     createdAt: importResponse.createdAt,
     registers: importResponse.recordCounts,
     issues: importResponse.issues,
+    records: importResponse.records,
   }
 }
 

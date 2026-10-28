@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Fiskardex\Storage;
 
+use Fiskardex\Domain\Import\ImportRepository;
 use PDO;
 
-final class SqliteImportStore
+final class SqliteImportStore implements ImportRepository
 {
     public function __construct(private readonly PDO $connection)
     {
