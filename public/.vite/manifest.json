@@ -1,24 +1,29 @@
 {
-  "_EmptyState.vue_vue_type_script_setup_true_lang-D5iMqOoc.js": {
-    "file": "app-assets/EmptyState.vue_vue_type_script_setup_true_lang-D5iMqOoc.js",
+  "_EmptyState.vue_vue_type_script_setup_true_lang-CqVKJ4d1.js": {
+    "file": "app-assets/EmptyState.vue_vue_type_script_setup_true_lang-CqVKJ4d1.js",
     "name": "EmptyState.vue_vue_type_script_setup_true_lang",
     "imports": [
       "index.html"
     ]
   },
-  "_StatusBadge.vue_vue_type_script_setup_true_lang-ChtKIjD8.js": {
-    "file": "app-assets/StatusBadge.vue_vue_type_script_setup_true_lang-ChtKIjD8.js",
+  "_StatusBadge.vue_vue_type_script_setup_true_lang-BeDJdLMF.js": {
+    "file": "app-assets/StatusBadge.vue_vue_type_script_setup_true_lang-BeDJdLMF.js",
     "name": "StatusBadge.vue_vue_type_script_setup_true_lang",
     "imports": [
-      "index.html"
+      "index.html",
+      "_client-D8SdeTcX.js"
     ]
   },
   "__plugin-vue_export-helper-DlAUqK2U.js": {
     "file": "app-assets/_plugin-vue_export-helper-DlAUqK2U.js",
     "name": "_plugin-vue_export-helper"
   },
+  "_client-D8SdeTcX.js": {
+    "file": "app-assets/client-D8SdeTcX.js",
+    "name": "client"
+  },
   "frontend/src/views/Allocation/Index.vue": {
-    "file": "app-assets/Index-BPmeAIN4.js",
+    "file": "app-assets/Index-DZOfnOrc.js",
     "name": "Index",
     "src": "frontend/src/views/Allocation/Index.vue",
     "isDynamicEntry": true,
@@ -28,7 +33,7 @@
     ]
   },
   "frontend/src/views/Costing/Index.vue": {
-    "file": "app-assets/Index--HXeaevx.js",
+    "file": "app-assets/Index-Opq2rWDB.js",
     "name": "Index",
     "src": "frontend/src/views/Costing/Index.vue",
     "isDynamicEntry": true,
@@ -37,38 +42,52 @@
     ]
   },
   "frontend/src/views/Import/Detail.vue": {
-    "file": "app-assets/Detail-Bl8Rjx-2.js",
+    "file": "app-assets/Detail-CofpOBR3.js",
     "name": "Detail",
     "src": "frontend/src/views/Import/Detail.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_StatusBadge.vue_vue_type_script_setup_true_lang-ChtKIjD8.js"
+      "_StatusBadge.vue_vue_type_script_setup_true_lang-BeDJdLMF.js",
+      "_client-D8SdeTcX.js"
     ]
   },
   "frontend/src/views/Import/Index.vue": {
-    "file": "app-assets/Index-D67A2Hao.js",
+    "file": "app-assets/Index-Dk3gt4Mf.js",
     "name": "Index",
     "src": "frontend/src/views/Import/Index.vue",
     "isDynamicEntry": true,
     "imports": [
       "index.html",
-      "_StatusBadge.vue_vue_type_script_setup_true_lang-ChtKIjD8.js",
-      "_EmptyState.vue_vue_type_script_setup_true_lang-D5iMqOoc.js"
+      "_StatusBadge.vue_vue_type_script_setup_true_lang-BeDJdLMF.js",
+      "_EmptyState.vue_vue_type_script_setup_true_lang-CqVKJ4d1.js",
+      "_client-D8SdeTcX.js"
+    ]
+  },
+  "frontend/src/views/Import/Summary.vue": {
+    "file": "app-assets/Summary-BI0kWMtJ.js",
+    "name": "Summary",
+    "src": "frontend/src/views/Import/Summary.vue",
+    "isDynamicEntry": true,
+    "imports": [
+      "index.html",
+      "_client-D8SdeTcX.js",
+      "_EmptyState.vue_vue_type_script_setup_true_lang-CqVKJ4d1.js"
     ]
   },
   "frontend/src/views/Kardex/Index.vue": {
-    "file": "app-assets/Index-xNp1iBsP.js",
+    "file": "app-assets/Index-BxtBWOR5.js",
     "name": "Index",
     "src": "frontend/src/views/Kardex/Index.vue",
     "isDynamicEntry": true,
     "imports": [
-      "_EmptyState.vue_vue_type_script_setup_true_lang-D5iMqOoc.js",
-      "index.html"
+      "index.html",
+      "_EmptyState.vue_vue_type_script_setup_true_lang-CqVKJ4d1.js",
+      "_client-D8SdeTcX.js"
     ]
   },
   "frontend/src/views/RecoverableIcms/Index.vue": {
-    "file": "app-assets/Index-Be8PnarG.js",
+    "file": "app-assets/Index-DHT-DITt.js",
     "name": "Index",
     "src": "frontend/src/views/RecoverableIcms/Index.vue",
     "isDynamicEntry": true,
@@ -78,7 +97,7 @@
     ]
   },
   "frontend/src/views/Reports/Index.vue": {
-    "file": "app-assets/Index-BkZX3ob4.js",
+    "file": "app-assets/Index-DHLDNFDO.js",
     "name": "Index",
     "src": "frontend/src/views/Reports/Index.vue",
     "isDynamicEntry": true,
@@ -88,12 +107,13 @@
     ]
   },
   "index.html": {
-    "file": "app-assets/index-DYz3-VRT.js",
+    "file": "app-assets/index-D0dA89SX.js",
     "name": "index",
     "src": "index.html",
     "isEntry": true,
     "dynamicImports": [
       "frontend/src/views/Import/Index.vue",
+      "frontend/src/views/Import/Summary.vue",
       "frontend/src/views/Import/Detail.vue",
       "frontend/src/views/Kardex/Index.vue",
       "frontend/src/views/Costing/Index.vue",
@@ -102,7 +122,7 @@
       "frontend/src/views/Reports/Index.vue"
     ],
     "css": [
-      "app-assets/index-BBe2Mrg0.css"
+      "app-assets/index-DiexTKUr.css"
     ]
   }
 }

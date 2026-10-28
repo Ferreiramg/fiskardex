@@ -15,6 +15,12 @@ const router = createRouter({
       meta: { title: 'Importações' },
     },
     {
+      path: '/imports/:id/summary',
+      name: 'import-summary',
+      component: () => import('@/views/Import/Summary.vue'),
+      meta: { title: 'Resumo da Importação' },
+    },
+    {
       path: '/imports/:id',
       name: 'import-detail',
       component: () => import('@/views/Import/Detail.vue'),

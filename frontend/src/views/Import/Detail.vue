@@ -188,10 +188,10 @@ function resetPage() {
           <p class="mt-1 text-xs text-slate-500">{{ totalRegisters.toLocaleString('pt-BR') }} linhas no arquivo · {{ records.length.toLocaleString('pt-BR') }} linhas disponíveis para consulta</p>
         </div>
         <div class="flex rounded-lg border border-surface-border bg-surface p-1" role="tablist" aria-label="Visualização dos registros">
-          <button class="rounded-md px-3 py-2 text-xs font-medium transition-colors" :class="activeTab === 'table' ? 'bg-surface-elevated text-white' : 'text-slate-400 hover:text-slate-200'" role="tab" :aria-selected="activeTab === 'table'" @click="activeTab = 'table'">
+          <button class="rounded-md px-3 py-2 text-xs font-medium transition-colors" :class="activeTab === 'table' ? 'bg-surface-elevated text-slate-100' : 'text-slate-400 hover:text-slate-200'" role="tab" :aria-selected="activeTab === 'table'" @click="activeTab = 'table'">
             Tabela de registros
           </button>
-          <button class="rounded-md px-3 py-2 text-xs font-medium transition-colors" :class="activeTab === 'preview' ? 'bg-surface-elevated text-white' : 'text-slate-400 hover:text-slate-200'" role="tab" :aria-selected="activeTab === 'preview'" @click="activeTab = 'preview'">
+          <button class="rounded-md px-3 py-2 text-xs font-medium transition-colors" :class="activeTab === 'preview' ? 'bg-surface-elevated text-slate-100' : 'text-slate-400 hover:text-slate-200'" role="tab" :aria-selected="activeTab === 'preview'" @click="activeTab = 'preview'">
             Prévia do arquivo
           </button>
         </div>
@@ -268,7 +268,8 @@ function resetPage() {
     </section>
 
     <div class="flex flex-wrap gap-3">
-      <RouterLink to="/kardex" class="btn-primary">Ir para Kardex</RouterLink>
+      <RouterLink :to="`/imports/${id}/summary`" class="btn-primary">Resumo contábil</RouterLink>
+      <RouterLink to="/kardex" class="btn-ghost">Ir para Kardex</RouterLink>
       <RouterLink to="/imports" class="btn-ghost">← Voltar à lista</RouterLink>
     </div>
   </div>

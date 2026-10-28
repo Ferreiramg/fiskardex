@@ -38,8 +38,48 @@ O Vite atende em `http://localhost:5173` e encaminha `/api` para o backend em
 - `POST /api/v1/imports`
 - `DELETE /api/v1/imports/{id}`
 
-As áreas de Kardex, custeio, alocação e ICMS permanecem como telas de produto:
-os endpoints correspondentes ainda não existem no backend.
+Kardex tem endpoints de consulta das execuções, movimentos e pendências. Custeio,
+alocação e ICMS permanecem como telas de produto sem processamento conectado.
+
+## Kardex: entradas EFD
+
+Após importar um EFD, execute o lote para criar movimentos dos C170 ligados a
+C100 de entrada (`IND_OPER = 0`):
+
+```powershell
+php bin/process-kardex <import-id>
+```
+
+Importações antigas que tenham sido persistidas parcialmente podem ser
+reconstruídas do arquivo original preservado, sem alterar seus bytes ou hash:
+
+```powershell
+php bin/reparse-efd.php <import-id>
+```
+
+O lote usa o 0200 para identificar o código e a unidade de inventário e o 0220
+para converter a unidade do C170. Fatores ausentes, inválidos, conflitantes,
+produtos ambíguos e documentos cancelados ficam no relatório como exceções; não
+geram movimentos. A mesma importação e versão do algoritmo retornam a execução
+existente. Uma atualização de regra deve usar nova versão de algoritmo.
+
+Cada movimento representa um C170 e mantém quantidades/unidades original e
+base, fator, valor original e linhas/base64 dos registros de origem. A conversão
+guarda até 8 casas decimais. O arquivo carregado permanece preservado no
+armazenamento de importação. Camadas FIFO, alocações e ICMS recuperável não fazem
+parte deste incremento.
+
+Na interface, `/kardex` apresenta os itens aceitos e as pendências de cada
+execução. A tabela inclui os campos fiscais do C170 e permite localizar o C170
+e seu C100 pelas linhas de origem. A API de consulta oferece:
+
+- `GET /api/v1/kardex/runs`
+- `GET /api/v1/kardex/runs/{id}/movements` (paginado e com busca)
+- `GET /api/v1/kardex/runs/{id}/exceptions`
+
+O detalhe de cada importação também oferece o resumo contábil em
+`/imports/{id}/summary`, com totais C100/C190 e os valores declarados em
+E110/E116. A página não calcula ICMS recuperável.
 
 ## Build de produção
 

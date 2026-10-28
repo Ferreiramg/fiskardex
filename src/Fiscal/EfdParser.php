@@ -48,14 +48,12 @@ final class EfdParser
 
             $counts[$type] = ($counts[$type] ?? 0) + 1;
 
-            if (count($records) < 5000) {
-                $records[] = [
+            $records[] = [
                     'line' => $line,
                     'type' => $type,
                     'fields' => $fields,
                     'rawBase64' => base64_encode($raw),
                 ];
-            }
 
             if ($type === '0000') {
                 $job['period'] = [

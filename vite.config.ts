@@ -12,7 +12,10 @@ export default defineConfig({
   },
   server: {
     port: 5173,
-    allowedHosts: ['interspatially-unnegotiable-arian.ngrok-free.dev'],
+    allowedHosts: [
+      'interspatially-unnegotiable-arian.ngrok-free.dev',
+      'melanoid-presatisfactory-rebbeca.ngrok-free.dev',
+    ],
     proxy: {
       '/api': {
         target: 'http://localhost:8000',

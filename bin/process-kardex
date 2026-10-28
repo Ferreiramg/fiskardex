@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Fiskardex\Application\Kardex\ProcessEfdEntries;
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$importId = $argv[1] ?? '';
+if ($importId === '') {
+    fwrite(STDERR, "Uso: php bin/process-kardex <import-id>\n");
+    exit(2);
+}
+$databasePath = getenv('APP_DATABASE_PATH') ?: dirname(__DIR__) . '/var/data/fiskardex.sqlite';
+$service = new ProcessEfdEntries(new PDO('sqlite:' . $databasePath));
+try {
+    $report = $service->execute($importId);
+    echo json_encode($report, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR), PHP_EOL;
+} catch (Throwable $exception) {
+    fwrite(STDERR, $exception->getMessage() . PHP_EOL);
+    exit(1);
+}

@@ -11,6 +11,8 @@ use Fiskardex\Application\Import\ListImports;
 use Fiskardex\Application\Import\UploadImport;
 use Fiskardex\Database\Migrator;
 use Fiskardex\Http\Controller\ImportController;
+use Fiskardex\Http\Controller\ImportSummaryController;
+use Fiskardex\Http\Controller\KardexController;
 use Fiskardex\Http\Controller\SystemController;
 use Fiskardex\Http\RouteFactory;
 use Fiskardex\Storage\SqliteImportStore;
@@ -50,6 +52,8 @@ final class Application
             new DeleteImport($store, $uploads),
         );
         $system = new SystemController($root . '/public/index.html');
+        $kardex = new KardexController($connection);
+        $importSummary = new ImportSummaryController($connection);
         $routes = (new RouteFactory())->create();
         $this->matcher = new UrlMatcher($routes, new RequestContext());
         $this->handlers = [
@@ -62,6 +66,11 @@ final class Application
             'imports.records' => $imports->records(...),
             'imports.documents' => $imports->documents(...),
             'imports.issues' => $imports->issues(...),
+            'imports.summary' => $importSummary->show(...),
+            'imports.summary_documents' => $importSummary->documents(...),
+            'kardex.runs' => $kardex->runs(...),
+            'kardex.movements' => $kardex->movements(...),
+            'kardex.exceptions' => $kardex->exceptions(...),
         ];
     }
 

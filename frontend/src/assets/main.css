@@ -3,6 +3,32 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    color-scheme: dark;
+    --surface: 11 15 20;
+    --surface-card: 18 24 32;
+    --surface-elevated: 26 34 45;
+    --surface-border: 36 48 65;
+    --text-slate-100: 241 245 249;
+    --text-slate-200: 226 232 240;
+    --text-slate-300: 203 213 225;
+    --text-slate-400: 148 163 184;
+    --text-slate-500: 100 116 139;
+  }
+
+  :root[data-theme='light'] {
+    color-scheme: light;
+    --surface: 248 250 252;
+    --surface-card: 255 255 255;
+    --surface-elevated: 241 245 249;
+    --surface-border: 226 232 240;
+    --text-slate-100: 15 23 42;
+    --text-slate-200: 51 65 85;
+    --text-slate-300: 71 85 105;
+    --text-slate-400: 100 116 139;
+    --text-slate-500: 148 163 184;
+  }
+
   body {
     @apply bg-surface text-slate-100 min-h-screen font-sans;
   }
@@ -22,7 +48,7 @@
   }
 
   .btn-ghost {
-    @apply btn bg-transparent text-slate-300 hover:bg-surface-elevated hover:text-white;
+    @apply btn bg-transparent text-slate-300 hover:bg-surface-elevated hover:text-slate-100;
   }
 
   .btn-danger {

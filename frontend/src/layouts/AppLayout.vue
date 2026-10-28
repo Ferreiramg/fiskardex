@@ -1,7 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 
 const route = useRoute()
+const theme = ref<'dark' | 'light'>(
+  document.documentElement.dataset.theme === 'light' ? 'light' : 'dark',
+)
+
+function toggleTheme() {
+  const nextTheme = theme.value === 'dark' ? 'light' : 'dark'
+  localStorage.setItem('fiskardex-theme', nextTheme)
+  document.documentElement.dataset.theme = nextTheme
+  theme.value = nextTheme
+}
 
 const nav = [
   { to: '/imports', label: 'Importações', icon: 'upload' },
@@ -25,7 +36,7 @@ const nav = [
               Fk
             </div>
             <div class="leading-tight">
-              <div class="font-semibold text-slate-100 group-hover:text-white transition-colors">
+              <div class="font-semibold text-slate-100 group-hover:text-slate-100 transition-colors">
                 Fiskardex
               </div>
               <div class="text-[11px] text-slate-500 -mt-0.5">
@@ -52,6 +63,41 @@ const nav = [
         </nav>
 
         <div class="flex items-center gap-2">
+          <button
+            type="button"
+            class="btn-ghost px-3"
+            :aria-pressed="theme === 'light'"
+            aria-label="Alternar tema de cores"
+            :title="theme === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'"
+            @click="toggleTheme"
+          >
+            <svg
+              v-if="theme === 'dark'"
+              aria-hidden="true"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <circle cx="12" cy="12" r="4" />
+              <path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42" />
+            </svg>
+            <svg
+              v-else
+              aria-hidden="true"
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="1.8"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z" />
+            </svg>
+            <span class="hidden sm:inline">
+              {{ theme === 'dark' ? 'Modo claro' : 'Modo escuro' }}
+            </span>
+          </button>
           <span class="badge-neutral hidden sm:inline-flex">
             <span class="w-1.5 h-1.5 rounded-full bg-success animate-pulse" />
             Local

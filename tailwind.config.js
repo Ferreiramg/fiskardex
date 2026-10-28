@@ -8,10 +8,17 @@ export default {
     extend: {
       colors: {
         surface: {
-          DEFAULT: '#0b0f14',
-          card: '#121820',
-          elevated: '#1a222d',
-          border: '#243041',
+          DEFAULT: 'rgb(var(--surface) / <alpha-value>)',
+          card: 'rgb(var(--surface-card) / <alpha-value>)',
+          elevated: 'rgb(var(--surface-elevated) / <alpha-value>)',
+          border: 'rgb(var(--surface-border) / <alpha-value>)',
+        },
+        slate: {
+          100: 'rgb(var(--text-slate-100) / <alpha-value>)',
+          200: 'rgb(var(--text-slate-200) / <alpha-value>)',
+          300: 'rgb(var(--text-slate-300) / <alpha-value>)',
+          400: 'rgb(var(--text-slate-400) / <alpha-value>)',
+          500: 'rgb(var(--text-slate-500) / <alpha-value>)',
         },
         accent: {
           DEFAULT: '#3b82f6',
